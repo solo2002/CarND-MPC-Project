@@ -56,10 +56,15 @@ MPC stands for Model Predictive Controller. This project is implemented by using
 The model uses follow equations to predict the vehicle current state and actuators based on their previous values in the last timestep.
 
 x[t] = x[t-1] + v[t-1] * cos(psi[t-1]) * dt
+
 y[t] = y[t-1] + v[t-1] * sin(psi[t-1]) * dt
+
 psi[t] = psi[t-1] + v[t-1] / Lf * delta[t-1] * dt
+
 v[t] = v[t-1] + a[t-1] * dt
+
 cte[t] = cte[t-1] + v[t-1] * sin(epsi[t-1]) * dt
+
 epsi[t] = epsi[t-1] + v[t-1] * delta[t-1] / Lf * dt
 
 Lf stands for the distance between the front of the vehicle and its gravity center. CTE is the short form of cross track error, and epsi is the error of heading direction (ψ).
