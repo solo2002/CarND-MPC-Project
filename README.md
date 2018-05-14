@@ -54,7 +54,7 @@ Next, run `brew install ruby`. If it's already there, run `brew upgrade ruby`.
 MPC stands for Model Predictive Controller. This project is implemented by using a simple Global Kinematic model, which considers position (x, y), heading direction (ψ), and velocity (v), but ignores gravity, tire forces, etc. In addition, two actuators, stearing angle (δ) and throttle (a) are used in this model. The stearting angle is in a range of [-25, 25] degree. The negative value of throttle means braking, and the positive values indicates accelerating. 
 
 The model uses follow equations to predict the vehicle current state and actuators based on their previous values in the last timestep.
-
+```
 x[t] = x[t-1] + v[t-1] * cos(psi[t-1]) * dt
 
 y[t] = y[t-1] + v[t-1] * sin(psi[t-1]) * dt
@@ -66,7 +66,7 @@ v[t] = v[t-1] + a[t-1] * dt
 cte[t] = cte[t-1] + v[t-1] * sin(epsi[t-1]) * dt
 
 epsi[t] = epsi[t-1] + v[t-1] * delta[t-1] / Lf * dt
-
+```
 Lf stands for the distance between the front of the vehicle and its gravity center. CTE is the short form of cross track error, and epsi is the error of heading direction (ψ).
 
 The values of N and dt are set to 10 and 0.1, respectively (These values are from the Udacity Q&A video). The meaning of these values is that the optimizer is taking account 1 second of duration into determing trajectory. Moreover, faster speed usually requires longer duration, or greater N value. 
