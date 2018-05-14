@@ -29,7 +29,18 @@ Self-Driving Car Engineer Nanodegree Program
 * [Eigen](http://eigen.tuxfamily.org/index.php?title=Main_Page). This is already part of the repo so you shouldn't have to worry about it.
 * Simulator. You can download these from the [releases tab](https://github.com/udacity/self-driving-car-sim/releases).
 * Not a dependency but read the [DATA.md](./DATA.md) for a description of the data sent back from the simulator.
+* In addition, for Mac user, I noticed an error related to 'coin/IpIpoptApplication.hpp' during building. I found the solution from Slack, which is as following: 
 
+Enter `export HOMEBREW_NO_AUTO_UPDATE=0` to reset homebrew to allow for updates. Then,  `brew update`.
+Then, run `brew uninstall ipopt` in case it's somewhere on your computer.
+Next, run `brew install ruby`. If it's already there, run `brew upgrade ruby`.
+`cd /usr/local/Homebrew/Library/Taps/homebrew/homebrew-science` ​ (or your own related directory)
+`git checkout 19f75951641d3a5e70ea105f76a6a77bc0553d07`
+`export HOMEBREW_NO_AUTO_UPDATE=1`
+`cd ..` (You should now be back into the main homebrew directory instead of homebrew-science)
+`git checkout 93a2e9fc25407b049d594ad2da112a5cb8bdf5c3`
+`brew tap homebrew/science`
+`brew install ipopt --with-openblas` 
 
 ## Basic Build Instructions
 
@@ -37,6 +48,10 @@ Self-Driving Car Engineer Nanodegree Program
 2. Make a build directory: `mkdir build && cd build`
 3. Compile: `cmake .. && make`
 4. Run it: `./mpc`.
+
+## MPC Controller
+
+MPC stands for Model Predictive Controller. This project is implemented by using a simple Global Kinematic model, which considers position (x, y), heading direction (ψ), and velocity (v), but ignores gravity, tire forces, etc. In addition, two actuators, stearing angle (δ) and throttle (a) are used in this model. The stearting angle is in a range of [-25, 25] degree. The negative value of throttle means braking, and the positive values indicates accelerating. 
 
 ## Tips
 
@@ -47,15 +62,6 @@ is the vehicle starting offset of a straight line (reference). If the MPC implem
 3. For visualization this C++ [matplotlib wrapper](https://github.com/lava/matplotlib-cpp) could be helpful.)
 4.  Tips for setting up your environment are available [here](https://classroom.udacity.com/nanodegrees/nd013/parts/40f38239-66b6-46ec-ae68-03afd8a601c8/modules/0949fca6-b379-42af-a919-ee50aa304e6a/lessons/f758c44c-5e40-4e01-93b5-1a82aa4e044f/concepts/23d376c7-0195-4276-bdf0-e02f1f3c665d)
 5. **VM Latency:** Some students have reported differences in behavior using VM's ostensibly a result of latency.  Please let us know if issues arise as a result of a VM environment.
-
-## Editor Settings
-
-We've purposefully kept editor configuration files out of this repo in order to
-keep it as simple and environment agnostic as possible. However, we recommend
-using the following settings:
-
-* indent using spaces
-* set tab width to 2 spaces (keeps the matrices in source code aligned)
 
 ## Code Style
 
