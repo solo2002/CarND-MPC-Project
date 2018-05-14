@@ -53,6 +53,23 @@ Next, run `brew install ruby`. If it's already there, run `brew upgrade ruby`.
 
 MPC stands for Model Predictive Controller. This project is implemented by using a simple Global Kinematic model, which considers position (x, y), heading direction (ψ), and velocity (v), but ignores gravity, tire forces, etc. In addition, two actuators, stearing angle (δ) and throttle (a) are used in this model. The stearting angle is in a range of [-25, 25] degree. The negative value of throttle means braking, and the positive values indicates accelerating. 
 
+The model uses follow equations to predict the vehicle current state and actuators based on their previous values in the last timestep.
+
+x[t] = x[t-1] + v[t-1] * cos(psi[t-1]) * dt
+y[t] = y[t-1] + v[t-1] * sin(psi[t-1]) * dt
+psi[t] = psi[t-1] + v[t-1] / Lf * delta[t-1] * dt
+v[t] = v[t-1] + a[t-1] * dt
+cte[t] = cte[t-1] + v[t-1] * sin(epsi[t-1]) * dt
+epsi[t] = epsi[t-1] + v[t-1] * delta[t-1] / Lf * dt
+
+Lf stands for the distance between the front of the vehicle and its gravity center. CTE is the short form of cross track error, and epsi is the error of heading direction (ψ).
+
+The values of N and dt are set to 10 and 0.1, respectively (These values are from the Udacity Q&A video). The meaning of these values is that the optimizer is taking account 1 second of duration into determing trajectory. Moreover, faster speed usually requires longer duration, or greater N value. 
+
+A third order polynomial fitting is used for waypoints, which are transformed to the vehicle's coordinates. The parameters of the cost function is determined by trying different values, using those values from the Udacity Q&A video as refereced. The final video is [here](https://youtu.be/YRigWV7o3Hw).
+
+A interesting finding is when trying to record my screen via Quicktime, I notice that it could affect the MPC controller performance. Therefore, I have to use my phone to record the video. One possible reason for that is due to the limited hardware of me laptop. 
+
 ## Tips
 
 1. It's recommended to test the MPC on basic examples to see if your implementation behaves as desired. One possible example
@@ -75,40 +92,3 @@ cmake and make!
 More information is only accessible by people who are already enrolled in Term 2
 of CarND. If you are enrolled, see [the project page](https://classroom.udacity.com/nanodegrees/nd013/parts/40f38239-66b6-46ec-ae68-03afd8a601c8/modules/f1820894-8322-4bb3-81aa-b26b3c6dcbaf/lessons/b1ff3be0-c904-438e-aad3-2b5379f0e0c3/concepts/1a2255a0-e23c-44cf-8d41-39b8a3c8264a)
 for instructions and the project rubric.
-
-## Hints!
-
-* You don't have to follow this directory structure, but if you do, your work
-  will span all of the .cpp files here. Keep an eye out for TODOs.
-
-## Call for IDE Profiles Pull Requests
-
-Help your fellow students!
-
-We decided to create Makefiles with cmake to keep this project as platform
-agnostic as possible. Similarly, we omitted IDE profiles in order to we ensure
-that students don't feel pressured to use one IDE or another.
-
-However! I'd love to help people get up and running with their IDEs of choice.
-If you've created a profile for an IDE that you think other students would
-appreciate, we'd love to have you add the requisite profile files and
-instructions to ide_profiles/. For example if you wanted to add a VS Code
-profile, you'd add:
-
-* /ide_profiles/vscode/.vscode
-* /ide_profiles/vscode/README.md
-
-The README should explain what the profile does, how to take advantage of it,
-and how to install it.
-
-Frankly, I've never been involved in a project with multiple IDE profiles
-before. I believe the best way to handle this would be to keep them out of the
-repo root to avoid clutter. My expectation is that most profiles will include
-instructions to copy files to a new location to get picked up by the IDE, but
-that's just a guess.
-
-One last note here: regardless of the IDE used, every submitted project must
-still be compilable with cmake and make./
-
-## How to write a README
-A well written README file can enhance your project and portfolio.  Develop your abilities to create professional README files by completing [this free course](https://www.udacity.com/course/writing-readmes--ud777).
