@@ -73,6 +73,8 @@ The values of N and dt are set to 10 and 0.1, respectively (These values are fro
 
 A third order polynomial fitting is used for waypoints, which are transformed to the vehicle's coordinates. The parameters of the cost function is determined by trying different values, using those values from the Udacity Q&A video as refereced. The final video is [here](https://youtu.be/YRigWV7o3Hw).
 
+As for the latency, I set it as 100 ms, which is referenced from the Udacity Q&A video, and same as the value of dt. In the main.cpp, the state of the vehicle in 100 ms was predicted in advance when current data are received. In another words, new x, y, ψ, and v are calculated base on the Global Kinematic Model. Then delta (the steering angle), and a (the throttle value) are calculated by the controller/simulator. Finally, cte and epsi are determined. 
+
 A interesting finding is when trying to record my screen via Quicktime, I notice that it could affect the MPC controller performance. Therefore, I have to use my phone to record the video. One possible reason for that is due to the limited hardware of me laptop. 
 
 ## Tips
